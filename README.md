@@ -209,7 +209,7 @@ TrimmomaticPE: Completed successfully``
 
 
 2. Downloading reference genome  
-   * Navigate to NCBI and search for GenBank accession `AF086833` and download fasta file  
+   * Navigate to NCBI and search for GenBank accession [`KJ660346.2`](https://www.ncbi.nlm.nih.gov/nuccore/KJ660346.2) and download fasta file  
     `$ mkdir -p data/ref_genome`  
     `$ cd data/ref_genome`  
 
@@ -222,12 +222,12 @@ TrimmomaticPE: Completed successfully``
     * Indexing allows the aligner to quickly find potential alignment sites for query sequences in a genome, which saves time during alignment  
     * Indexing the reference only has to be run once  
     * The only reason you would want to create a new index is if you are working with a different reference genome or you are using a different tool for alignment  
-    `$ bwa index AF086833.fasta`  
+    `$ bwa index KJ660346.2.fasta`  
 
 5. Align reads to the reference genome  
     * The alignment process consists of choosing an appropriate reference genome to map our reads against and then deciding on an aligner  
     * We will use the BWA-MEM algorithm, which is the latest and is generally recommended for high-quality queries as it is faster and more accurate  
-    `$ bwa mem data/ref_genome/AF086833.fasta data/trimmed_fastq/SRR1972917_1.trim.fastq.gz data/trimmed_fastq/SRR1972917_2.trim.fastq.gz > results/sam/SRR1972917.aligned.sam`  
+    `$ bwa mem data/ref_genome/KJ660346.2.fasta data/trimmed_fastq/SRR1972917_1.trim.fastq.gz data/trimmed_fastq/SRR1972917_2.trim.fastq.gz > results/sam/SRR1972917.aligned.sam`  
 
     * The SAM file, is a tab-delimited text file that contains information for each individual read and its alignment to the genome  
     * The compressed binary version of SAM is called a BAM file  
@@ -258,7 +258,7 @@ TrimmomaticPE: Completed successfully``
 * We will be using bcftools, but there are a few things we need to do before actually calling the variants  
 
 1. Calculate the read coverage of positions in the genome  
-   `$ bcftools mpileup -O b -o results/bcf/SRR1972917_raw.bcf -f data/ref_genome/AF086833.fasta results/bam/SRR1972917.aligned.sorted.bam `  
+   `$ bcftools mpileup -O b -o results/bcf/SRR1972917_raw.bcf -f data/ref_genome/KJ660346.2.fasta results/bam/SRR1972917.aligned.sorted.bam `  
 
 2. Detect the single nucleotide variants (SNVs)  
     * Identify SNVs using bcftools call. We have to specify ploidy with the flag `--ploidy`, which is one for the haploid E. coli. `-m` allows for multiallelic and rare-variant calling, `-v` tells the program to output variant sites only (not every site in the genome), and `-o` specifies where to write the output file:  
@@ -301,7 +301,7 @@ TrimmomaticPE: Completed successfully``
     `$ samtools index results/bam/SRR1972917.aligned.sorted.bam`  
 2. Viewing with `tview`
     * In order to visualize our mapped reads, we use tview, giving it the sorted bam file and the reference file:  
-    `$ samtools tview results/bam/SRR1972917.aligned.sorted.bam data/ref_genome/AF086833.fasta`  
+    `$ samtools tview results/bam/SRR1972917.aligned.sorted.bam data/ref_genome/KJ660346.2.fasta`  
 
     * The first line of output shows the genome coordinates in our reference genome. The second line shows the reference genome sequence  
     * The third line shows the consensus sequence determined from the sequence reads. 
@@ -320,7 +320,7 @@ TrimmomaticPE: Completed successfully``
     * This makes it straightforward to relate your data with information about repeat regions, known genes, epigenetic features or areas of cross-species conservation, to name just a few  
   
     1. Open IGV  
-    2. Load our reference genome file (AF086833.fasta) into IGV using the “Load Genomes from File…” option under the “Genomes” pull-down menu  
+    2. Load our reference genome file (KJ660346.2.fasta) into IGV using the “Load Genomes from File…” option under the “Genomes” pull-down menu  
     3. Load our BAM file (SRR1972917.aligned.sorted.bam) using the “Load from File…” option under the “File” pull-down menu  
     4. Do the same with our VCF file (SRR1972917_final_variants.vcf)  
 
